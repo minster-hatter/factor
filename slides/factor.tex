@@ -73,6 +73,57 @@
 	\end{frame}
 	\begin{frame}
 		\frametitle{Interpreting Bayes Factors}
+		- Some attempts have been made to give Bayes factors meaning in words (although the usage of words changes over time a lot more than numbers\ldots).\\
+		- The table below lists one set of interpretations by Harold Jeffreys that might sometimes be handy.\\
+\begin{small}
+		\begin{center}
+			\begin{tabular}{|c | c | c|}
+				\hline
+				$\mathcal{K}$ & dHart & interpretation\\
+				\hline
+				$<10^{0}$ & $<0$ & evidence against $H$\\
+				$10^{0}$ to $10^{0.5}$ & $0$ to $5$ & evidence barely worth mentioning\\
+				$10^{0.5}$ to $10^{1}$ & $5$ to $10$ & evidence with some substance\\
+				$10^{1}$ to $10^{1.5}$ & $10$ to $15$ & strong evidence\\
+				$10^{1.5}$ to $10^{2}$ & $15$ to $20$ & very strong evidence\\
+				$>10^{2}$ & $>20$ & decisive evidence\\
+				\hline
+			\end{tabular}
+		\end{center}
+\end{small}
+{\footnotesize 		- dHarts are explained here \url{https://en.wikipedia.org/wiki/Hartley_(unit)} and are caluclated as $10log_{10}\mathcal{K}$.}
+	\end{frame}
+	\begin{frame}
+	\frametitle{Dependent Evidence}
+	- Turing assumed that evidence was independent and left it at that.\\
+	- This meant that dHarts for each piece of evidence could be added.\\
+	- Life is not so easy, and ignoring dependencies can "double count" information.\\
+	- Fortunately, the approach is relatively simple and easily accesible with a Bayesian network: weights now need to be calculated as joint probabilities $\mathcal{P}(H | E_{1}, E_{2})$.\\
+	\end{frame}
+		\begin{frame}
+		\frametitle{Dependent Evidence: worked example I.}
+		- Say that the causal structure is $H \rightarrow E_{1} \rightarrow E_{2}$.\\
+		- We are assuming that $E_{1}$ and $E_{2}$ were seen to be true.\\
+		- Let:\\
+			- $\mathcal{P}(H) = \mathcal{P}(\neg H) = 0.5$, $\therefore \mathcal{O} = 1$ (\textit{i.e.}, 0 dHart)\\
+			- $\mathcal{P}(E_{1} | H) = 0.3$, $\mathcal{P}(E_{1} | \neg H) = 0.1$, $\therefore \mathcal{O}(E_{1} | H) = 3$ ($\approx 4.8$ dHart)\\
+			- $\mathcal{P}(E_{2} | E_{1}) = 0.6$, $\mathcal{P}(E_{2} | \neg E_{1}) = 0.2$.\\
+			- As $H_{2}$ does not directly depend on $H$, there are no odds directly dependet on $H$ to multiply with the first factor, \textit{i.e.}, knowledge of $E_{2}$ adds nothing here once $E_{1}$ is known.\\
+			- A combiend factor would be $\mathcal{O}(E_{1}, E_{2} | H) = 3$ ($\approx 4.8$ dHart).\\ 
+			- Bayesian networks make life much easier, especially as evidence structures get more complicated.\\
+			-See dependent\textunderscore pipe.py.\\
+	\end{frame}
+	\begin{frame}
+		\frametitle{Dependent Evidence: worked example II.}
+		- Say that the causal structure is $H \rightarrow E_{1} \rightarrow E_{2}$, $H \rightarrow E_{2}$.\\
+		- We are assuming that $E_{1}$ and $E_{2}$ were seen to be true.\\
+		- Let:\\
+			- $\mathcal{P}(H) = 0.3$, $\mathcal{P}(\neg H) = 0.7$, $\therefore \mathcal{O} \approx 0.43$ ($\approx -3.7$ dHart)\\
+			- $\mathcal{P}(E_{1} | H) = 0.7$, $\mathcal{P}(E_{1} | \neg H) = 0.2$, $\therefore \mathcal{O}(E_{1} | H) = 3.5$ ($\approx 5.4$ dHart)\\
+			- $\mathcal{P}(E_{2} | H, E_{1}) = 0.8$, $\mathcal{P}(E_{2} | \neg H, E_{1}) = 0.4$, $\therefore \mathcal{O}(E_{2} | H, E_{1}) = 2$ ($\approx 3$ dHart)\\
+			-So, $\mathcal{O}(E_{1}, E_{2} | H) \approx 7$ ($\approx 8.4$ dHart)\\
+			- See dependent.py.\\
+			-Ultimately, the probabilies for a given node are dependent on all edges entering a the node.\\
 	\end{frame}
 	\begin{frame}
 		\frametitle{Appendix: deriving Bayes' theorem}
